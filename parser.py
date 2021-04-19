@@ -1,9 +1,25 @@
 from scapy.all import *
-from Crypto.Cipher import AES
+#from Crypto.Cipher import AES
 import base64
+import argparse
+import glob
+import os
+import shutil
 
 
-traffic = rdpcap("filedump.pcap")
+parser = argparse.ArgumentParser("python script.py <origFilesDir> <resultsDir>")
+parser.add_argument("origFilesDir", help="directory of original files", type=str)
+parser.add_argument("resultsDir", help="directory of the results", type=str)
+args = parser.parse_args()
+
+res_files = glob.glob(args.resultsDir+"/*.pcap")
+for res in res_files:
+	traffic = rdpcap(res)
+	print(traffic[1].show())
+
+
+
+#traffic = rdpcap("filedump.pcap")
 
 """
 packet.Packet.show(traffic[1936])
@@ -14,6 +30,7 @@ a = traffic[1937].layers
 print(a)
 """
 
+"""
 a = ""
 
 for i in traffic:
@@ -67,3 +84,4 @@ decryptedtext = str(decrypted,'utf-8')
 print("The Java decrypted: " + decryptedtext)
 
 
+"""
